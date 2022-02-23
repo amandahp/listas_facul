@@ -28,17 +28,17 @@ def lista_primos(n: int) -> list:
 def conta_primos(s) -> dict:
     if isinstance(s, list) or isinstance(s, tuple):
         if len(s) > 0:
-            lista_repeticoes = list([])
-            lista_primos = list([])
+            repeat_list = list([])
+            prime_number_list = list([])
             for i in s:
                 eh_primo(i)
                 if eh_primo(i):
-                    lista_primos.append(i)
+                    prime_number_list.append(i)
             for j in lista_primos:
                 repeticoes = lista_primos.count(j)
                 if repeticoes >= 1:
-                    lista_repeticoes.append(repeticoes)
-            dicionario = dict(zip(lista_primos, lista_repeticoes))
+                    repeat_list.append(repeticoes)
+            dicionario = dict(zip(lista_primos, repeat_list))
         return dicionario
     else:
         return {}
@@ -54,21 +54,26 @@ def eh_armstrong(n: int) -> bool:
         for digito in valores_digitos:
             digito_elevado = digito**qtia_digitos
             soma_digitos += digito_elevado
-        return (numero == soma_digitos)
+    return (numero == soma_digitos)
 
 
 def eh_quase_armstrong(n: int) -> bool:
+    e_quase_armstrong = bool()
     numero = n
     numero_int = isinstance(numero, int)
-    if numero >= 0 and numero_int:
-        if not eh_armstrong(numero):
-            qtia_digitos = len(str(numero))
-            valores_digitos = [int(_) for _ in str(numero)]
-            soma_digitos = 0
-            for digito in valores_digitos:
-                digito_elevado = digito**qtia_digitos
-                soma_digitos += digito_elevado
-        return (numero == soma_digitos + 1 or numero == soma_digitos + 2) # noqa
+    if numero >= 0 and numero_int and not eh_armstrong(numero):
+        qtia_digitos = len(str(numero))
+        valores_digitos = [int(_) for _ in str(numero)]
+        soma_digitos = 0
+        for digito in valores_digitos:
+            digito_elevado = digito**qtia_digitos
+            soma_digitos += digito_elevado
+        if soma_digitos == (numero + 1) or soma_digitos == (numero - 1):
+            e_quase_armstrong = bool(True)
+        return e_quase_armstrong
+    else:
+        e_quase_armstrong = bool(False)
+        return e_quase_armstrong
 
 
 def lista_armstrong(n: int) -> list:
@@ -76,7 +81,7 @@ def lista_armstrong(n: int) -> list:
     numero_int = isinstance(numero, int)
     if numero >= 0 and numero_int:
         lista_armstrong = list([])
-        for i in range(1, numero):
+        for i in range(0, numero):
             eh_armstrong(i)
             if eh_armstrong(i):
                 lista_armstrong.append(i)
